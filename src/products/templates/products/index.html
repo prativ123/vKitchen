@@ -1,0 +1,78 @@
+{% extends 'admins/layout.html' %}
+{% load static %}
+
+{% block title %}
+<title>Admins - All Products</title>
+
+{% endblock%}
+
+
+{% block main_content %}
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="col-md-10">
+
+            {% for msg in messages %}
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="alert alert-success">
+                {{ msg }}
+            </div>
+
+            {% endif%}
+
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div class="alert alert-danger">
+                {{ msg }}
+            </div>
+
+            {% endif%}
+
+            {% endfor %}
+
+            <table class="table table-bordered table-striped table-light">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Product Price</th>
+                        <th>Available Stock</th>
+                        <th>Product Description</th>
+                        <th>Product Image</th>
+                        <th>Category</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product_show in products %}
+                    <!-- <li>Name : {{ product_show.product_name }}</li>
+                        <li><img src="/{{product_show.image}}" alt="" width="200"></li> -->
+                    <tr>
+                        <td> {{ product_show.product_name }}</td>
+                        <td> {{ product_show.product_price }}</td>
+                        <td> {{ product_show.stock }}</td>
+                        <td>{{ product_show.description }}</td>
+                        <td><img src="/{{product_show.image}}" alt="" width="180" height="200"></td>
+                        <td>{{ product_show.category }}</td>
+                        <td>
+                            <a href="/products/updateproduct/{{product_show.id}}" class="btn btn-primary my-2">
+                                <i class="fas fa-pen-square"></i>
+                            </a>
+
+                            <a href="/products/deleteproduct/{{product_show.id}}" class="btn btn-danger"
+                                onclick="return confirm('Are You Sure Want To Delete This Product ?')">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- static file render -->
+<!-- <img src="{% static 'images/a.jpg' %}" alt=""> -->
+
+{% endblock %}

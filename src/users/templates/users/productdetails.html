@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}
+<title>E-commerce - ProductPage</title>
+{% endblock%}
+
+{% block main_content %}
+
+
+<!-- card start -->
+<div class="container">
+    <div class="d-flex mt-3">
+        <div class="col-md-4">
+            <img src="/{{products.image}}" alt="{{products.product_name}}" width="500">
+
+        </div>
+        <div class="offset-md-2 col-md-6 shadow">
+            <h2 class="text-muted text-center">{{products.product_name}}</h2>
+            <h2 class="text-center">Rs. {{products.product_price}}</h2>
+            <h3 class="text-center">Available Quantity : {{products.stock}}</h3>
+            <p class="text-center"><b>Category: {{products.category}}</b></p>
+            <p class="text-muted text-center">{{products.description}}</p>
+            <center>
+                <a href="/products/add_to_cart/{{products.id}}" class="btn btn-success" >Add To Cart</a>
+            </center>
+        </div>
+    </div>
+</div>
+
+<!-- card end -->
+
+
+{% endblock%}

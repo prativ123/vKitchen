@@ -1,0 +1,75 @@
+{% extends 'admins/layout.html' %}
+{% load static %}
+
+{% block title %}
+<title>Admins - All Orders</title>
+
+{% endblock%}
+
+
+{% block main_content %}
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="col-md-10">
+
+            {% for msg in messages %}
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="alert alert-success">
+                {{ msg }}
+            </div>
+
+            {% endif%}
+
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div class="alert alert-danger">
+                {{ msg }}
+            </div>
+
+            {% endif%}
+
+            {% endfor %}
+
+            <table class="table table-bordered table-striped table-light">
+                <thead>
+                    <tr>
+                        <th>Items Name</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                        <th>Product Image</th>
+                        <th>Ordered Date</th>
+                        <th>Status</th>
+                        <th>Payment Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in items %}
+                 
+                    <tr>
+                        <td> {{ i.product.product_name }}</td>
+                        <td> {{ i.product.product_price }}</td>
+                        <td> {{i.quantity}} </td>
+                        <td> {{i.total_price}} </td>
+                        <td><img src="/{{i.product.image}}" alt="" width="240" height="150"></td>
+                        <td>{{ i.created_date }}</td>
+                        <td>{{i.status}}</td>
+                        <td>Using {{i.payment_method}} ({%if i.payment_status == True %} Payment Completed {% else %} Not paid{% endif %})  </td>
+                        <td>
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-pen-square"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,39 @@
+
+
+{% extends 'layout.html' %}
+
+{% block title %}
+<title>E-commerce - EsewaPayment</title>
+{% endblock%}
+
+{% block main_content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h1 class="text-center">You are being redirect to Esewa. Please wait........</h1>
+            <div class="card py-2" style="display: none">
+                <form action="https://uat.esewa.com.np/epay/main" method="POST" id="esewa_form">
+                    <input value="{{order.total_price}}" name="tAmt" type="text" readonly>
+                    <input value="{{order.total_price}}" name="amt" type="text" readonly>
+                    <input value="0" name="txAmt" type="text" readonly>
+                    <input value="0" name="psc" type="text" readonly>
+                    <input value="0" name="pdc" type="text" readonly>
+                    <input value="EPAYTEST" name="scd" type="text" readonly>
+                    <input value="{{order.id}}_{{cart.id}}" name="pid" type="text" readonly>
+                    <input value="http://localhost:8000/products/esewa_verify" type="hidden" name="su">
+                    <input value="{{request.build_absolute_uri}}" type="hidden" name="fu">
+                    <input value="Submit" type="submit">
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    setTimeout(function(){
+        document.getElementById('esewa_form').submit()
+    },1000)
+</script>
+
+{% endblock%}

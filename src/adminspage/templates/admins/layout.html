@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}
+    {{ section.title }}
+    {% endblock %}
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <!-- fontawasome only -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+    <!-- favicon -->
+    <link rel="shortcut icon"
+        href="data:image/png;base64,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"
+        type="image/x-icon">
+
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="d-flex justify-content-end">
+            <div class="col-md-1 mt-3">
+                <button class="btn btn-success" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Menu</button>
+
+                <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasRight"
+                    aria-labelledby="offcanvasRightLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasRightLabel">Admin Dashboard</h5>
+                        <button type="button" class="bg-dark text-white border-0" data-bs-dismiss="offcanvas" aria-label="Close"><span class="fs-1">&times;</span></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="list-unstyled">
+                            <li><a href="/products/addproduct" class="text-decoration-none text-white"><i class="fas fa-plus"></i> &nbsp; Add Product</a></li>
+                            <li><a href="/products/addcategory" class="text-decoration-none text-white"><i class="fas fa-plus"></i> &nbsp; Add Category</a></li>
+                            <li><a href="" class="text-decoration-none text-white"><i class="fas fa-plus"></i> &nbsp; Users</a></li>
+                            <li><a href="/products/allorder" class="text-decoration-none text-white"><i class="fas fa-plus"></i> &nbsp; Orders</a></li>
+                            <li><a href="" class="text-decoration-none text-white"><i class="fas fa-plus"></i> &nbsp; Profile</a></li>
+                            <li><a href="/products" class="text-decoration-none text-white"><i class="fas fa-plus"></i> &nbsp; Products</a></li>
+                            <li><a href="/products/category" class="text-decoration-none text-white"><i class="fas fa-plus"></i> &nbsp; Categories</a></li>
+                        </ul>
+                    </div>
+                    <div class="offcanvas-body">
+                        <img src="https://image.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-260nw-548848999.jpg" alt="" style="height: 200px; width: 200px;" class="rounded-circle">
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-decoration-none text-white"><b>Name:</b> {{request.user.username}}</a></li>
+                            <li><a href="#" class="text-decoration-none text-white"><b>Status:</b> Super Admin</a></li>
+                            <li class="mt-2"><a href="/logout" class="text-decoration-none text-white btn btn-danger">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        {% block main_content %}
+
+        {% endblock %}
+    </div>
+
+
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+
+{% extends 'layout.html' %}
+
+{% block title %}
+<title>E-commerce - My Order</title>
+{% endblock%}
+
+{% block main_content %}
+
+
+<!-- card start -->
+<div class="container-fluid">
+    <div class="d-flex justify-content-center">
+        <div class="col-md-10">
+
+            {% for msg in messages %}
+
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="alert alert-success">
+                {{ msg }}
+            </div>
+
+            {% endif%}
+
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div class="alert alert-danger">
+                {{ msg }}
+            </div>
+
+            {% endif%}
+
+            {% endfor %}
+
+            {% if orders|length < 1 %}
+            <h2 class="text-center mt-5 text-danger shadow-lg p-5">
+                No Any Order Yet
+            </h2>
+            {% else%}
+            <h2 class="text-center text-muted my-3">
+                My Order Items Till Date
+            </h2>
+            
+            <table class="table table-bordered table-striped table-light">
+                <thead>
+                    <tr>
+                        <th>Items Name</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                        <th>Product Image</th>
+                        <th>Ordered Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in orders %}
+                   
+                    <tr>
+                        <td> {{ i.product.product_name }}</td>
+                        <td> {{ i.product.product_price }}</td>
+                        <td> {{i.quantity}} </td>
+                        <td> {{i.total_price}} </td>
+                        <td><img src="/{{i.product.image}}" alt="" width="240" height="150"></td>
+                        <td>{{ i.created_date }}</td>
+                        <td>{{i.status}}</td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+<!-- card end -->
+
+
+{% endblock%}
