@@ -291,3 +291,13 @@ def esewa_verify(request):
     else:
         messages.add_message(request,messages.ERROR,'Unable to make Payment')
         return redirect('/products/mycart')
+    
+
+
+
+def all_products(request):
+    products = Product.objects.all().order_by('-id')
+    context = {
+        'products':products,
+    }
+    return render(request,'products/allproducts.html',context)

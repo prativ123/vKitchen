@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}
+<title>E-commerce - ProductPage</title>
+{% endblock%}
+
+{% block main_content %}
+
+
+<!-- card start -->
+<div class="container-fluid">
+   
+    </form>
+    {% for msg in messages %}
+    {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+    <div class="alert alert-success">
+        {{ msg }}
+    </div>
+
+    {% endif%}
+
+    {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+    <div class="alert alert-danger">
+        {{ msg }}
+    </div>
+
+    {% endif%}
+
+    {% endfor %}
+    <div class="row row-cols-1 row-cols-md-4 g-4 mt-5">
+        {% for product in products%}
+        <div class="col">
+            <div class="card shadow-lg">
+                <div class="card-img">
+                    <img src="/{{product.image}}" class="card-img-top" alt="{{product.product_name}}" height="250px">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{product.product_name}}</h5>
+                    <h5 class="card-title">Rs. {{product.product_price}}</h5>
+                    <a href="/productdetails/{{product.id}}" class="btn btn-success">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<!-- card end -->
+
+
+{% endblock%}

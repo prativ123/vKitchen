@@ -18,4 +18,5 @@ urlpatterns=[
     path('my_order',my_order),
     path('allorder',all_order),
     path('esewa_verify',esewa_verify),
+    path('allproducts',all_products),
 ]
