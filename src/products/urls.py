@@ -19,4 +19,8 @@ urlpatterns=[
     path('allorder',all_order),
     path('esewa_verify',esewa_verify),
     path('allproducts',all_products),
+    path('category/<int:category_id>/', view_products_by_category, name='view_products_by_category'),
+
+    
+
 ]

@@ -297,7 +297,26 @@ def esewa_verify(request):
 
 def all_products(request):
     products = Product.objects.all().order_by('-id')
+    categories = Category.objects.all()
     context = {
         'products':products,
+        'categories': categories
     }
     return render(request,'products/allproducts.html',context)
+
+
+
+
+
+from django.shortcuts import render
+from .models import Product, Category
+
+def view_products_by_category(request, category_id):
+    category = Category.objects.get(id=category_id)
+    products = Product.objects.filter(category=category)
+    context = {
+        'category': category,
+        'products': products
+    }
+    return render(request, 'products/category_products.html', context)
+
