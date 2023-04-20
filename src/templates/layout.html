@@ -37,6 +37,7 @@
 
             <div class="text-end">
                 {% if user.is_authenticated %}
+                <a href="#" class="mr-2 text-light">Welcome {{ user.username }}!</a>
                 <a href="/logout" class="btn btn-danger">Logout</a>
 
                 {% else %}
