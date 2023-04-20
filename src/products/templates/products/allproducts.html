@@ -27,12 +27,12 @@
     {% endif%}
 
     {% endfor %}
-    <div class="row row-cols-1 row-cols-md-4 g-4 mt-5">
+    <div class="row row-cols-1 row-cols-md-4 g-4 mt-5 px-5">
         {% for product in products%}
         <div class="col">
             <div class="card shadow-lg">
                 <div class="card-img">
-                    <img src="/{{product.image}}" class="card-img-top" alt="{{product.product_name}}" height="250px">
+                    <img src="/{{product.image}}" class="img-fluid" alt="{{product.product_name}}" height="250px">
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{product.product_name}}</h5>
