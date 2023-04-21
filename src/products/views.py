@@ -301,3 +301,27 @@ def all_products(request):
         'products':products,
     }
     return render(request,'products/allproducts.html',context)
+
+
+def all_category_view(request):
+    categories = Category.objects.all()
+    context = {
+        'categories': categories
+    }
+    return render(request,'products/allcategoryview.html',context)
+
+
+
+
+from django.shortcuts import render
+from .models import Product, Category
+
+def view_products_by_category(request, category_id):
+    category = Category.objects.get(id=category_id)
+    products = Product.objects.filter(category=category)
+    context = {
+        'category': category,
+        'products': products
+    }
+    return render(request, 'products/category_products.html', context)
+

@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}
+<title>E-commerce - CategoryPage</title>
+{% endblock%}
+
+{% block main_content %}
+
+
+<div class="container">
+    <div class="row py-5">
+        <table class="table table-bordered table-striped table-light w-50 mx-auto">
+            <thead>
+                    <th colspan="2" class="text-center fs-3" >Category Name</th>
+            </thead>
+            <tbody>
+                {% for category_show in categories %}
+               
+                <tr>
+                    <td class="text-center fs-4"> {{ category_show.category_name }}</td>
+        
+                        <td class="text-center">
+                            <a href="/products/category/{{category_show.id}}" class="btn btn-success">View Food Items</a>
+                        </td>
+                </tr>
+                
+        
+                {% endfor %}
+        
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+{% endblock%}

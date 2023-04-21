@@ -1,4 +1,5 @@
 import imp
+from django import forms
 from django.forms import ModelForm,fields
 from . models import *
 
@@ -16,3 +17,4 @@ class OrderForm(ModelForm):
     class Meta:
         model = Order
         fields = ['quantity','payment_method','contact_no','address']
+
