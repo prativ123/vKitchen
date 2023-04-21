@@ -16,6 +16,13 @@
 
     <link rel="shortcut icon" href="{% static 'images/logo1.png'%}" type="image/x-icon">
 </head>
+<style>
+  .nav .nav-link.active{
+    color: #fff;
+    background-color: rgb(131, 131, 131);
+    border-radius: 10px;
+  }
+</style>
 <body>
     <header class="p-3 text-bg-dark">
         <div class="container">
@@ -25,8 +32,9 @@
             </a>
     
             <ul class="nav col-12 col-lg-auto mx-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="/" class="nav-link px-2 text-white fs-5 me-3">Home</a></li>
+              <li><a href="/" class="nav-link px-2 text-white fs-5 me-3 active">Home</a></li>
               <li><a href="/products/allproducts" class="nav-link px-2 text-white fs-5 me-3">Product</a></li>
+              
               <li><a href="/products/my_order" class="nav-link px-2 text-white fs-5 me-3">My Order</a></li>
               <li><a href="#" class="nav-link px-2 text-white fs-5 me-3">About</a></li>
             </ul>

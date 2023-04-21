@@ -7,30 +7,34 @@
 {% block main_content %}
 
 
-
-<table class="table table-bordered table-striped table-light">
-    <thead>
-        <tr>
-            <th>Category Name</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        {% for category_show in categories %}
-       
-        <tr>
-            <td> {{ category_show.category_name }}</td>
-
-                <td>
-                    <a href="/products/category/{{category_show.id}}" class="btn btn-success">View Food Items</a>
-                </td>
-        </tr>
+<div class="container">
+    <div class="row py-5">
+        <table class="table table-bordered table-striped table-light">
+            <thead>
+                <tr>
+                    <th>Category Name</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for category_show in categories %}
+               
+                <tr>
+                    <td> {{ category_show.category_name }}</td>
         
+                        <td>
+                            <a href="/products/category/{{category_show.id}}" class="btn btn-success">View Food Items</a>
+                        </td>
+                </tr>
+                
+        
+                {% endfor %}
+        
+            </tbody>
+        </table>
+    </div>
+</div>
 
-        {% endfor %}
-
-    </tbody>
-</table>
 <!-- card start -->
 <div class="container-fluid">
    
@@ -54,7 +58,7 @@
 
 
     {% endfor %}
-    <div class="row row-cols-1 row-cols-md-4 g-4 mt-5 px-5">
+    <div class="row row-cols-1 row-cols-md-4 g-4 px-5">
         {% for product in products%}
         <div class="col">
             <div class="card shadow-lg">

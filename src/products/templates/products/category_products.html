@@ -2,11 +2,13 @@
 
 
 {% block main_content %}
-<div class="row pt-3 px-5">
-<h2>Products in {{ category.category_name }}</h2>
+<div class="container">
+    <div class="row pt-3">
+        <h2>Products in {{ category.category_name }}</h2>
+        </div>
 </div>
 <!-- card start -->
-<div class="container-fluid">
+<div class="container">
    
 </form>
 {% for msg in messages %}
@@ -28,7 +30,7 @@
 
 
 {% endfor %}
-<div class="row row-cols-1 row-cols-md-4 g-4 mt-5 px-5">
+<div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
     {% for category in products %}
     <div class="col">
         <div class="card shadow-lg">
