@@ -297,13 +297,18 @@ def esewa_verify(request):
 
 def all_products(request):
     products = Product.objects.all().order_by('-id')
-    categories = Category.objects.all()
     context = {
         'products':products,
-        'categories': categories
     }
     return render(request,'products/allproducts.html',context)
 
+
+def all_category_view(request):
+    categories = Category.objects.all()
+    context = {
+        'categories': categories
+    }
+    return render(request,'products/allcategoryview.html',context)
 
 
 
