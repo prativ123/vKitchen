@@ -78,6 +78,36 @@
             </ul>
 
 
+            <div class="container">
+                <h1 class="text-center">Reviews</h1>
+                
+                <form action="{% url 'users:add_reviews' product_id=products.id %}" method="POST" class="mb-3">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-sm-11">
+                      <input type="text" name="review" class="form-control" placeholder="Enter Your Review">
+                      <input type="hidden" name="product" class="form-control" value="{{products.product_id}}">
+                    </div>
+                    <div class="col-sm-1">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </div>
+                </form>
+            
+                {% for review in reviews %}
+                <div class="main-reviews card bg-success mb-3">
+                  <div class="card-body">
+                    <div class="user_details" style="display: flex; border-bottom: 1px solid rgb(31, 30, 30);">
+                      <h3 class="mr-3">{{ review.user.username }} </h3>
+                      <p class="mt-2">{{ review.posted_on }}</p>
+                    </div>
+                      <h4>{{ review.review }}</h4>
+                  </div>
+                </div>
+                {% endfor %}
+                
+              </div>
+
         </div>
     </div>
 </div>

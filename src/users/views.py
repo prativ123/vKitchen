@@ -7,6 +7,7 @@ from django.contrib import messages
 from .forms import LoginForm
 from products.models import *
 from django.http import HttpResponse, JsonResponse, HttpRequest
+from django.contrib.auth.decorators import login_required
 
 
 def register_user(request):
@@ -87,12 +88,7 @@ def productpage(request):
     return render(request,'users/products.html',context)
 
 
-# def product_details(request,product_id):
-#     products=Product.objects.get(id=product_id)
-#     context = {
-#         'products':products
-#     }
-#     return render(request,'users/productdetails.html',context)
+
 
 
 def product_details(request: HttpRequest,product_id) -> HttpResponse:
@@ -100,8 +96,47 @@ def product_details(request: HttpRequest,product_id) -> HttpResponse:
     rating = Rating.objects.filter(product=products, user=request.user).first()
         # product.avg_rating = product.average_rating()
     products.user_rating = rating.rating if rating else 0
+    reviews = Review.objects.filter(product=products).order_by('-id')[:7] 
     context = {
         'products':products, 
+        'reviews' : reviews,
 
     }
-    return render(request, 'users/productdetails.html',{"products": products})
+    return render(request, 'users/productdetails.html',context)
+
+
+
+
+
+from .models import Review
+from products.models import Product
+
+
+@login_required
+def add_reviews(request, product_id):
+    if request.method == "POST":
+        user = request.user
+        products = Product.objects.get(id=product_id)
+        review = request.POST.get("review")
+
+        new_review = Review(user=user, product=products, review=review)
+        new_review.save()
+        messages.success(request, "Thank you for reviewing this item!")
+
+    return redirect('users:product_details', product_id=product_id)
+
+    
+
+
+# def product_details(request: HttpRequest,product_id) -> HttpResponse:
+#     products=Product.objects.get(id=product_id)
+#     rating = Rating.objects.filter(product=products, user=request.user).first()
+#         # product.avg_rating = product.average_rating()
+#     products.user_rating = rating.rating if rating else 0
+#     reviews = Review.objects.filter(product=products).order_by('-id')[:7] 
+#     context = {
+#         'products':products, 
+#         'reviews' : reviews,
+
+#     }
+#     return render(request, 'users/productdetails.html',context)

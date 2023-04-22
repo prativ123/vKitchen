@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.validators import *
 from django.core import validators
 from django.db.models import Avg
+from django.urls import reverse
 
 # Create your models here.
 class Category(models.Model):
@@ -28,6 +29,8 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.product_name}: {self.average_rating()}"
+    
+
     
 
 class Rating(models.Model):

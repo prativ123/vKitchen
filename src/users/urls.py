@@ -7,12 +7,15 @@ from django.conf.urls.static import static
 from django.conf import settings
 from . import views
 
+app_name = "users"
+
 urlpatterns=[
     path('register/', register_user),
     path('login/', login_user),
     path('logout/',logout_user),
     path('',homepage, name='homepage'),
     path('allproducts/',productpage),
-    path('productdetails/<int:product_id>', product_details),
+    path('productdetails/<int:product_id>', product_details, name='product_details'),
     path('rate/<int:product_id>/<int:rating>/',rate),
+    path('postReview/<int:product_id>',add_reviews, name='add_reviews'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

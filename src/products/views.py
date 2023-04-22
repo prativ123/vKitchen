@@ -362,9 +362,13 @@ def all_category_view(request):
 from django.shortcuts import render
 from .models import Product, Category
 
-def view_products_by_category(request, category_id):
+def view_products_by_category(request:HttpRequest, category_id) -> HttpResponse:
     category = Category.objects.get(id=category_id)
     products = Product.objects.filter(category=category)
+    for product in products:
+        rating = Rating.objects.filter(product=product, user=request.user).first()
+        # product.avg_rating = product.average_rating()
+        product.user_rating = rating.rating if rating else 0
     context = {
         'category': category,
         'products': products
@@ -373,15 +377,4 @@ def view_products_by_category(request, category_id):
 
 
 
-def all_products(request: HttpRequest) -> HttpResponse:
-    products = Product.objects.all().order_by('-id')
-    for product in products:
-        rating = Rating.objects.filter(product=product, user=request.user).first()
-        # product.avg_rating = product.average_rating()
-        product.user_rating = rating.rating if rating else 0
-    context = {
-        'products':products, 
 
-    }
-    return render(request, 'products/allproducts.html',{"products": products})
-# context

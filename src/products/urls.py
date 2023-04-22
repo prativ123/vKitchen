@@ -22,7 +22,7 @@ urlpatterns=[
     path('esewa_verify',esewa_verify),
     path('allproducts',all_products),
     path('allcategoryview',all_category_view),
-    path('category/<int:category_id>/', view_products_by_category, name='view_products_by_category'),
+    path('categoryproduct/<int:category_id>/', view_products_by_category, name='view_products_by_category'),
     path('rate/<int:product_id>/<int:rating>/',rate),
     path('allproductsdes',all_products_des),
     path('allproductsaes',all_products_aes),
