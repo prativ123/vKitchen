@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import *
 from django.core import validators
-
+from django.db.models import Avg
 
 # Create your models here.
 class Category(models.Model):
@@ -24,11 +24,21 @@ class Product(models.Model):
     category = models.ForeignKey(Category,on_delete=models.CASCADE,null=True)
     
     def average_rating(self) -> float:
-        return Rating.objects.filter(products=self).aggregate(Avg("rating"))["rating__avg"] or 0
+        return Rating.objects.filter(product=self).aggregate(Avg("rating"))["rating__avg"] or 0
 
     def __str__(self):
         return f"{self.product_name}: {self.average_rating()}"
     
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.product.product_name}: {self.rating}"
+    
+
 class Cart(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -50,13 +60,3 @@ class Order(models.Model):
     address = models.CharField(max_length=200, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
 
-
-from django.db.models import Avg
-
-class Rating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    products = models.ForeignKey(Product, on_delete=models.CASCADE)
-    rating = models.IntegerField(default=0)
-
-    def __str__(self):
-        return f"{self.products}: {self.rating}"

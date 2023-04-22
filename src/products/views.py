@@ -1,7 +1,7 @@
 from email import message
 from multiprocessing import context
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpRequest
 
 from .models import *
 from .forms import *
@@ -10,20 +10,17 @@ from django.contrib.auth.decorators import login_required
 from users.auth import admin_only
 
 
-
-
 # Create your views here.
 @login_required
 @admin_only
 def index(request):
     products = Product.objects.all()
-    for product in products:
-        rating = Rating.objects.filter(product=product, user=request.user).first()
-        product.user_rating = rating.rating if rating else 0
     context = {
         'products': products
     }
-    return render(request, 'products/index.html',{"products": products}, context)
+    return render(request, 'products/index.html', context)
+
+
 
 
 
@@ -107,7 +104,6 @@ def show_category(request):
         'categories': categories
     }
     return render(request, 'products/allcategory.html', context)
-    
 
 @login_required
 @admin_only
@@ -333,18 +329,5 @@ def view_products_by_category(request, category_id):
     }
     return render(request, 'products/category_products.html', context)
 
-from django.http import HttpResponse, HttpRequest
-def rate(request: HttpRequest, product_id: int, rating: int) -> HttpResponse:
-    products = Product.objects.get(id=product_id)
-    Rating.objects.filter(products=products, user=request.user).delete()
-    products.rating_set.create(user=request.user, rating=rating)
-    return index(request)
 
-from django.http import JsonResponse
-from .models import Product
 
-def rate_post(request, product_id, rating):
-    product = Product.objects.get(id=product_id)
-    product.rating = rating
-    product.save()
-    return JsonResponse({'success': True})
