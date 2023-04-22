@@ -87,9 +87,21 @@ def productpage(request):
     return render(request,'users/products.html',context)
 
 
-def product_details(request,product_id):
+# def product_details(request,product_id):
+#     products=Product.objects.get(id=product_id)
+#     context = {
+#         'products':products
+#     }
+#     return render(request,'users/productdetails.html',context)
+
+
+def product_details(request: HttpRequest,product_id) -> HttpResponse:
     products=Product.objects.get(id=product_id)
+    rating = Rating.objects.filter(product=products, user=request.user).first()
+        # product.avg_rating = product.average_rating()
+    products.user_rating = rating.rating if rating else 0
     context = {
-        'products':products
+        'products':products, 
+
     }
-    return render(request,'users/productdetails.html',context)
+    return render(request, 'users/productdetails.html',{"products": products})
