@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import *
 from django.core import validators
+from django.db.models import Avg
 
 # Create your models here.
 class Category(models.Model):
@@ -21,10 +22,23 @@ class Product(models.Model):
     description = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category,on_delete=models.CASCADE,null=True)
+    
+    def average_rating(self) -> float:
+        return Rating.objects.filter(product=self).aggregate(Avg("rating"))["rating__avg"] or 0
 
     def __str__(self):
-        return self.product_name
+        return f"{self.product_name}: {self.average_rating()}"
     
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.product.product_name}: {self.rating}"
+    
+
 class Cart(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     user = models.ForeignKey(User,on_delete=models.CASCADE)

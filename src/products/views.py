@@ -1,13 +1,15 @@
 from email import message
 from multiprocessing import context
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpRequest
 
 from .models import *
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from users.auth import admin_only
+from django.db.models import Avg
+from .models import Product
 
 
 # Create your views here.
@@ -19,6 +21,11 @@ def index(request):
         'products': products
     }
     return render(request, 'products/index.html', context)
+
+
+
+
+
 
 def testFunc(request):
     return HttpResponse('this is just the test function')
@@ -295,12 +302,51 @@ def esewa_verify(request):
 
 
 
-def all_products(request):
+
+@login_required
+def all_products(request: HttpRequest) -> HttpResponse:
     products = Product.objects.all().order_by('-id')
+    for product in products:
+        rating = Rating.objects.filter(product=product, user=request.user).first()
+        # product.avg_rating = product.average_rating()
+        product.user_rating = rating.rating if rating else 0
     context = {
-        'products':products,
+        'products':products, 
+
     }
-    return render(request,'products/allproducts.html',context)
+    return render(request, 'products/allproducts.html',{"products": products})
+# context
+
+
+@login_required
+def all_products_des(request: HttpRequest) -> HttpResponse:
+    products = Product.objects.annotate(avg_rating=Avg('rating__rating'))
+    for product in products:
+        rating = Rating.objects.filter(product=product, user=request.user).first()
+        product.user_rating = rating.rating if rating else 0
+    sorted_products = sorted(products, key=lambda p: p.avg_rating or 0, reverse=True)
+
+    context = {'products': sorted_products}
+    return render(request, 'products/allproductsdes.html', context)
+
+@login_required
+def all_products_aes(request: HttpRequest) -> HttpResponse:
+    products = Product.objects.annotate(avg_rating=Avg('rating__rating'))
+    for product in products:
+        rating = Rating.objects.filter(product=product, user=request.user).first()
+        product.user_rating = rating.rating if rating else 0
+    sorted_products = sorted(products, key=lambda p: p.avg_rating or 0, reverse=False)
+
+    context = {'products': sorted_products}
+    return render(request, 'products/allproductsaes.html', context)
+
+
+
+def rate(request: HttpRequest, product_id: int, rating: int) -> HttpResponse:
+    product = Product.objects.get(id=product_id)
+    Rating.objects.filter(product=product, user=request.user).delete()
+    product.rating_set.create(user=request.user, rating=rating)
+    return all_products(request)
 
 
 def all_category_view(request):
@@ -324,4 +370,6 @@ def view_products_by_category(request, category_id):
         'products': products
     }
     return render(request, 'products/category_products.html', context)
+
+
 

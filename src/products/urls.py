@@ -1,5 +1,7 @@
 from django.urls import path
 from . views import *
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns=[
     path('',index),
@@ -21,7 +23,7 @@ urlpatterns=[
     path('allproducts',all_products),
     path('allcategoryview',all_category_view),
     path('category/<int:category_id>/', view_products_by_category, name='view_products_by_category'),
-
-    
-
-]
+    path('rate/<int:product_id>/<int:rating>/',rate),
+    path('allproductsdes',all_products_des),
+    path('allproductsaes',all_products_aes),
+    ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

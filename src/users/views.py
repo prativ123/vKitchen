@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from .forms import LoginForm
 from products.models import *
+from django.http import HttpResponse, JsonResponse, HttpRequest
 
 
 def register_user(request):
@@ -54,14 +55,26 @@ def logout_user(request):
     logout(request)
     return redirect('/login')
 
-def homepage(request):
+def homepage(request: HttpRequest) -> HttpResponse:
     products = Product.objects.all().order_by('-id')[:8]
-   
-    context = {
-        'products':products,
-    
+    for product in products:
+        # rating = Rating.objects.filter(product=product, user=request.user).first()
+        
+        # product.user_rating = rating.rating if rating else 0
+        context = {
+        'products':products, 
+
     }
     return render(request, 'users/index.html',context)
+# context
+
+def rate(request: HttpRequest, product_id: int, rating: int) -> HttpResponse:
+    product = Product.objects.get(id=product_id)
+    Rating.objects.filter(product=product, user=request.user).delete()
+    product.rating_set.create(user=request.user, rating=rating)
+    return homepage(request)
+
+
 
 def productpage(request):
     products = Product.objects.all().order_by('-id')
