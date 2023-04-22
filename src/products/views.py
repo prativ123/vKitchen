@@ -303,7 +303,7 @@ def esewa_verify(request):
 
 
 
-
+@login_required
 def all_products(request: HttpRequest) -> HttpResponse:
     products = Product.objects.all().order_by('-id')
     for product in products:
@@ -318,7 +318,7 @@ def all_products(request: HttpRequest) -> HttpResponse:
 # context
 
 
-
+@login_required
 def all_products_des(request: HttpRequest) -> HttpResponse:
     products = Product.objects.annotate(avg_rating=Avg('rating__rating'))
     for product in products:
@@ -329,6 +329,7 @@ def all_products_des(request: HttpRequest) -> HttpResponse:
     context = {'products': sorted_products}
     return render(request, 'products/allproductsdes.html', context)
 
+@login_required
 def all_products_aes(request: HttpRequest) -> HttpResponse:
     products = Product.objects.annotate(avg_rating=Avg('rating__rating'))
     for product in products:

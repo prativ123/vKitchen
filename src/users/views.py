@@ -58,14 +58,14 @@ def logout_user(request):
 def homepage(request: HttpRequest) -> HttpResponse:
     products = Product.objects.all().order_by('-id')[:8]
     for product in products:
-        rating = Rating.objects.filter(product=product, user=request.user).first()
-        # product.avg_rating = product.average_rating()
-        product.user_rating = rating.rating if rating else 0
-    context = {
+        # rating = Rating.objects.filter(product=product, user=request.user).first()
+        
+        # product.user_rating = rating.rating if rating else 0
+        context = {
         'products':products, 
 
     }
-    return render(request, 'users/index.html',{"products": products})
+    return render(request, 'users/index.html',context)
 # context
 
 def rate(request: HttpRequest, product_id: int, rating: int) -> HttpResponse:
