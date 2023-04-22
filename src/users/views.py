@@ -90,7 +90,7 @@ def productpage(request):
 
 
 
-
+@login_required
 def product_details(request: HttpRequest,product_id) -> HttpResponse:
     products=Product.objects.get(id=product_id)
     rating = Rating.objects.filter(product=products, user=request.user).first()

@@ -362,6 +362,7 @@ def all_category_view(request):
 from django.shortcuts import render
 from .models import Product, Category
 
+@login_required
 def view_products_by_category(request:HttpRequest, category_id) -> HttpResponse:
     category = Category.objects.get(id=category_id)
     products = Product.objects.filter(category=category)
