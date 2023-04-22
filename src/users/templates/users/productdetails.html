@@ -106,6 +106,8 @@
                       <p class="mt-2">{{ review.review }}</p>
                   </div>
                 </div>
+                {% empty %}
+                    <h5>No reviews yet...</h5>
                 {% endfor %}
                 
               </div>
