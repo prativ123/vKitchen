@@ -59,7 +59,9 @@
             </h5>
 
 
-            <ul class="btn btn-light list-inline rating-list">
+
+  {%if order_status%}
+  <ul class="btn btn-light list-inline rating-list">
                 <li onclick="rate(5, {{ products.id }})">
                     <i class="fa fa-star {% if products.user_rating > 4 %} checked {% endif %}" title="Rate 5"></i>
                 </li>
@@ -76,6 +78,10 @@
                     <i class="fa fa-star {% if products.user_rating > 0 %} checked {% endif %}" title="Rate 1"></i>
                 </li>
             </ul>
+
+            
+            
+     {%endif%}
 
 
             <div class="container">

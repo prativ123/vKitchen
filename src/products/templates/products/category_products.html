@@ -81,7 +81,7 @@
                     <span class="fa fa-star {% if category.average_rating > 3 %} checked {% endif %}" ></span>
                     <span class="fa fa-star {% if category.average_rating > 4 %} checked {% endif %}"></span>
                 </h5>
-    
+                {%if order_status%}
                 <ul class="btn btn-light list-inline rating-list">
                   <li onclick="rate(5, {{ category.id }})">
                       <i class="fa fa-star {% if category.user_rating > 4 %} checked {% endif %}" title="Rate 5"></i>
@@ -99,7 +99,7 @@
                       <i class="fa fa-star {% if category.user_rating > 0 %} checked {% endif %}" title="Rate 1"></i>
                   </li>
               </ul>
-
+              {%endif%}
 
                 <a href="/productdetails/{{category.id}}" class="btn btn-success">View Details</a>
             </div>

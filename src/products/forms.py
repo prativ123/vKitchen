@@ -18,3 +18,9 @@ class OrderForm(ModelForm):
         model = Order
         fields = ['quantity','payment_method','contact_no','address']
 
+class ChangePaymentStatusForm(forms.Form):
+    PAYMENT_STATUS_CHOICES = (
+        (True, 'Paid'),
+        (False, 'Unpaid'),
+    )
+    payment_status = forms.ChoiceField(choices=PAYMENT_STATUS_CHOICES, required=True)

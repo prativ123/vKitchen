@@ -9,7 +9,7 @@
     </h2>
     <div class="row d-flex">
         <div class="col-md-6 col-xl-4 mb-4">
-            <a href="#" class="text-decoration-none">
+            <a href="{% url 'allorder' %}" class="text-decoration-none">
                 <div class="card shadow-lg border-0 py-2">
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
@@ -20,7 +20,7 @@
                                     </span>
                                 </div>
                                 <div class="text-secondary fw-bold mb-0 text-center">
-                                    <span>Delivered:0</span>
+                                    <span>Delivered:{{total_orders}}</span>
                                 </div>
                                 <div class="col-auto text-center">
                                     <i class="fab fa-first-order-alt fs-1 text-success fa-spin"></i>
@@ -43,7 +43,7 @@
                                     </span>
                                 </div>
                                 <div class="text-white fw-bold mb-0 text-center">
-                                    <span>Deactived:0</span>
+                                    <span>Active:{{total_users}}</span>
                                 </div>
                                 <div class="col-auto text-center">
                                     <i class="fas fa-users fs-1 text-success"></i>
@@ -55,7 +55,7 @@
             </a>
         </div>
         <div class="col-md-6 col-xl-4 mb-4">
-            <a href="#" class="text-decoration-none">
+            <a href="{% url 'allordercompleted' %}" class="text-decoration-none">
                 <div class="card shadow-lg border-0 py-2 bg-success">
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
@@ -66,7 +66,7 @@
                                     </span>
                                 </div>
                                 <div class="text-white fw-bold mb-0 text-center">
-                                    <span>Sold:0</span>
+                                    <span>Sold:{{total_completed}}</span>
                                 </div>
                                 <div class="col-auto text-center">
                                     <i class="fas fa-globe fs-1 text-light fa-spin"></i>

@@ -92,6 +92,12 @@ def productpage(request):
 
 @login_required
 def product_details(request: HttpRequest,product_id) -> HttpResponse:
+
+    order = Order.objects.filter(product=product_id,user=request.user.id,status="Completed")
+    order_status = False
+    if order: 
+        order_status = True
+
     products=Product.objects.get(id=product_id)
     rating = Rating.objects.filter(product=products, user=request.user).first()
         # product.avg_rating = product.average_rating()
@@ -100,6 +106,7 @@ def product_details(request: HttpRequest,product_id) -> HttpResponse:
     context = {
         'products':products, 
         'reviews' : reviews,
+        'order_status':order_status
 
     }
     return render(request, 'users/productdetails.html',context)
@@ -113,17 +120,30 @@ from products.models import Product
 
 
 @login_required
-def add_reviews(request, product_id):
+def add_reviews(request: HttpRequest,product_id)->HttpResponse:
     if request.method == "POST":
         user = request.user
         products = Product.objects.get(id=product_id)
+        order = Order.objects.filter(product=product_id,user=request.user.id,status="Completed")
+        order_status = False
+        if order: 
+            order_status = True
         review = request.POST.get("review")
-
         new_review = Review(user=user, product=products, review=review)
         new_review.save()
         messages.success(request, "Thank you for reviewing this item!")
+        reviews = Review.objects.filter(product=products).order_by('-id')[:7] 
+        context={
+            'products':products, 
+            'reviews' : reviews,
+            'order_status':order_status
+        }
 
-    return redirect('users:product_details', product_id=product_id)
+    return redirect('users:product_details',order_status=order_status,product_id=product_id)
+
+
+
+
 
     
 

@@ -2,6 +2,7 @@ from django.urls import path
 from . views import *
 from django.conf.urls.static import static
 from django.conf import settings
+from django.contrib import admin
 
 urlpatterns=[
     path('',index),
@@ -18,7 +19,9 @@ urlpatterns=[
     path('deletecartitems/<int:cart_id>',remove_cart_item),
     path('orderitemform/<int:product_id>/<int:cart_id>', order_item_form),
     path('my_order',my_order),
-    path('allorder',all_order),
+    path('allorder',all_order,name="allorder"),
+    path('allordercompleted',all_order_completed,name="allordercompleted"),
+
     path('esewa_verify',esewa_verify),
     path('allproducts',all_products),
     path('allcategoryview',all_category_view),
@@ -26,4 +29,6 @@ urlpatterns=[
     path('rate/<int:product_id>/<int:rating>/',rate),
     path('allproductsdes',all_products_des),
     path('allproductsaes',all_products_aes),
+    path('changestatus/<int:id>/<str:status>',change_status,name="changestatus"),
+    path('change_status/<int:order_id>/', change_payment_status, name='change_payment_status'),
     ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
