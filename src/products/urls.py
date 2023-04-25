@@ -18,7 +18,7 @@ urlpatterns=[
     path('mycart',show_cart_item),
     path('deletecartitems/<int:cart_id>',remove_cart_item),
     path('orderitemform/<int:product_id>/<int:cart_id>', order_item_form),
-    path('my_order',my_order),
+    path('my_order',my_order,name="my_order"),
     path('allorder',all_order,name="allorder"),
     path('allordercompleted',all_order_completed,name="allordercompleted"),
 

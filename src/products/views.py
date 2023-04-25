@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from users.auth import admin_only
 from django.db.models import Avg
 from .models import Product
-
+from users.models import Notification
 
 # Create your views here.
 @login_required
@@ -314,9 +314,12 @@ def esewa_verify(request):
 @login_required
 def change_status(request:HttpRequest,id,status): 
     order= Order.objects.get(id=id)
+    user = User.objects.get(id=order.user.id)
+    notification = Notification(order_id=order,content=f"Your order has been {status}",user=user)
+    notification.save()
     order.status = status
     order.save()
-    return redirect('allorder')
+    return redirect('products:allorder')
 
 
 def all_products(request: HttpRequest) -> HttpResponse:

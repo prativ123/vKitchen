@@ -113,10 +113,13 @@ def product_details(request: HttpRequest,product_id) -> HttpResponse:
 
 
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+from django.views.generic import ListView
 
-from .models import Review
+from .models import Review,Notification
 from products.models import Product
+
 
 
 @login_required
@@ -124,10 +127,7 @@ def add_reviews(request: HttpRequest,product_id)->HttpResponse:
     if request.method == "POST":
         user = request.user
         products = Product.objects.get(id=product_id)
-        order = Order.objects.filter(product=product_id,user=request.user.id,status="Completed")
-        order_status = False
-        if order: 
-            order_status = True
+
         review = request.POST.get("review")
         new_review = Review(user=user, product=products, review=review)
         new_review.save()
@@ -136,15 +136,26 @@ def add_reviews(request: HttpRequest,product_id)->HttpResponse:
         context={
             'products':products, 
             'reviews' : reviews,
-            'order_status':order_status
+            
         }
 
-    return redirect('users:product_details',order_status=order_status,product_id=product_id)
+    return redirect('users:product_details',product_id=product_id)
 
 
 
+from django.utils import timezone
+class NotificationListView(LoginRequiredMixin,ListView):
+    model = Notification
+    template_name = 'notification_list.html'
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user=self.request.user)
 
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add created_date to the context
+        context['now'] = timezone.now()
+        return context
     
 
 
