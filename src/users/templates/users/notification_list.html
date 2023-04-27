@@ -7,7 +7,8 @@
 
 {% if user %}
 {% for notification in object_list|slice:":5" %}
-<div class="card" style="width: 18rem;">
+<div class="container mt-5">
+  <div class="card w-100">
     <div class="card-body">
       <!-- <h5 class="card-title">Card title</h5> -->
       <p class="card-text">Order: {{notification.order_id}}</p>
@@ -18,6 +19,7 @@
       <a href="{% url 'products:my_order'%}" class="btn btn-primary">Go to my Order</a>
     </div>
   </div>
+</div>
 {% endfor %}
 {% endif %}
 
