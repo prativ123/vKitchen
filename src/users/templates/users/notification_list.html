@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% load static %}
+<title>Notification</title>
+
+
+{% block main_content %}
+
+{% if user %}
+{% for notification in object_list|slice:":5" %}
+<div class="container mt-5">
+  <div class="card w-100">
+    <div class="card-body">
+      <!-- <h5 class="card-title">Card title</h5> -->
+      <p class="card-text">Order: {{notification.order_id}}</p>
+      <!-- <p class="card-text">Content:{{notification.content}}</p> -->
+      <p class="card-text">Order placed on: {{ notification.order_id.created_date|date:"F j, Y" }} at {{ notification.order_id.created_date|time:"g:i A" }}</p>
+      
+      
+      <a href="{% url 'products:my_order'%}" class="btn btn-primary">Go to my Order</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+
+
+{% endblock%}

@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from users.auth import admin_only
 from django.db.models import Avg
 from .models import Product
-
+from users.models import Notification
 
 # Create your views here.
 @login_required
@@ -268,6 +268,17 @@ def all_order(request):
     }
     return render(request,'products/allorders.html',context)
 
+@login_required
+@admin_only
+def all_order_completed(request):
+    items = Order.objects.filter(status="Completed")
+    context = {
+        'items':items
+    }
+    return render(request,'products/allorderscompleted.html',context)
+
+
+
 import requests as req
 def esewa_verify(request):
     import xml.etree.ElementTree as ET
@@ -300,16 +311,23 @@ def esewa_verify(request):
         return redirect('/products/mycart')
     
 
-
-
-
 @login_required
+def change_status(request:HttpRequest,id,status): 
+    order= Order.objects.get(id=id)
+    user = User.objects.get(id=order.user.id)
+    notification = Notification(order_id=order,content=f"Your order has been {status}",user=user)
+    notification.save()
+    order.status = status
+    order.save()
+    return redirect('products:allorder')
+
+
 def all_products(request: HttpRequest) -> HttpResponse:
     products = Product.objects.all().order_by('-id')
-    for product in products:
-        rating = Rating.objects.filter(product=product, user=request.user).first()
+    # for product in products:
+        # rating = Rating.objects.filter(product=product, user=request.user).first()
         # product.avg_rating = product.average_rating()
-        product.user_rating = rating.rating if rating else 0
+        # product.user_rating = rating.rating if rating else 0
     context = {
         'products':products, 
 
@@ -318,23 +336,23 @@ def all_products(request: HttpRequest) -> HttpResponse:
 # context
 
 
-@login_required
+
 def all_products_des(request: HttpRequest) -> HttpResponse:
     products = Product.objects.annotate(avg_rating=Avg('rating__rating'))
-    for product in products:
-        rating = Rating.objects.filter(product=product, user=request.user).first()
-        product.user_rating = rating.rating if rating else 0
+    # for product in products:
+        # rating = Rating.objects.filter(product=product, user=request.user).first()
+        # product.user_rating = rating.rating if rating else 0
     sorted_products = sorted(products, key=lambda p: p.avg_rating or 0, reverse=True)
 
     context = {'products': sorted_products}
     return render(request, 'products/allproductsdes.html', context)
 
-@login_required
+
 def all_products_aes(request: HttpRequest) -> HttpResponse:
     products = Product.objects.annotate(avg_rating=Avg('rating__rating'))
-    for product in products:
-        rating = Rating.objects.filter(product=product, user=request.user).first()
-        product.user_rating = rating.rating if rating else 0
+    # for product in products:
+    #     rating = Rating.objects.filter(product=product, user=request.user).first()
+    #     product.user_rating = rating.rating if rating else 0
     sorted_products = sorted(products, key=lambda p: p.avg_rating or 0, reverse=False)
 
     context = {'products': sorted_products}
@@ -362,9 +380,16 @@ def all_category_view(request):
 from django.shortcuts import render
 from .models import Product, Category
 
-def view_products_by_category(request, category_id):
+@login_required
+def view_products_by_category(request:HttpRequest, category_id) -> HttpResponse:
+    
     category = Category.objects.get(id=category_id)
     products = Product.objects.filter(category=category)
+    
+    for product in products:
+        rating = Rating.objects.filter(product=product, user=request.user).first()
+        # product.avg_rating = product.average_rating()
+        product.user_rating = rating.rating if rating else 0
     context = {
         'category': category,
         'products': products
@@ -372,16 +397,25 @@ def view_products_by_category(request, category_id):
     return render(request, 'products/category_products.html', context)
 
 
+from django.contrib import messages
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Order
+from .forms import ChangePaymentStatusForm
+from django.http import HttpResponseRedirect
 
-def all_products(request: HttpRequest) -> HttpResponse:
-    products = Product.objects.all().order_by('-id')
-    for product in products:
-        rating = Rating.objects.filter(product=product, user=request.user).first()
-        # product.avg_rating = product.average_rating()
-        product.user_rating = rating.rating if rating else 0
+@login_required
+@admin_only
+def change_payment_status(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    form = ChangePaymentStatusForm(request.POST or None, instance=order)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Payment status has been updated successfully.')
+            return HttpResponseRedirect(reverse('products:all_order', kwargs={'order_id': order.id}))
+
     context = {
-        'products':products, 
-
+        'form': form,
+        'order': order
     }
-    return render(request, 'products/allproducts.html',{"products": products})
-# context
+    return render(request, 'change_status.html', context)

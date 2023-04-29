@@ -7,6 +7,7 @@ from django.contrib import messages
 from .forms import LoginForm
 from products.models import *
 from django.http import HttpResponse, JsonResponse, HttpRequest
+from django.contrib.auth.decorators import login_required
 
 
 def register_user(request):
@@ -87,21 +88,86 @@ def productpage(request):
     return render(request,'users/products.html',context)
 
 
-# def product_details(request,product_id):
-#     products=Product.objects.get(id=product_id)
-#     context = {
-#         'products':products
-#     }
-#     return render(request,'users/productdetails.html',context)
 
 
+@login_required
 def product_details(request: HttpRequest,product_id) -> HttpResponse:
+
+    order = Order.objects.filter(product=product_id,user=request.user.id,status="Completed")
+    order_status = False
+    if order: 
+        order_status = True
+
     products=Product.objects.get(id=product_id)
     rating = Rating.objects.filter(product=products, user=request.user).first()
         # product.avg_rating = product.average_rating()
     products.user_rating = rating.rating if rating else 0
+    reviews = Review.objects.filter(product=products).order_by('-id')[:7] 
     context = {
         'products':products, 
+        'reviews' : reviews,
+        'order_status':order_status
 
     }
-    return render(request, 'users/productdetails.html',{"products": products})
+    return render(request, 'users/productdetails.html',context)
+
+
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.views.generic import ListView
+
+from .models import Review,Notification
+from products.models import Product
+
+
+
+@login_required
+def add_reviews(request: HttpRequest,product_id)->HttpResponse:
+    if request.method == "POST":
+        user = request.user
+        products = Product.objects.get(id=product_id)
+
+        review = request.POST.get("review")
+        new_review = Review(user=user, product=products, review=review)
+        new_review.save()
+        messages.success(request, "Thank you for reviewing this item!")
+        reviews = Review.objects.filter(product=products).order_by('-id')[:7] 
+        context={
+            'products':products, 
+            'reviews' : reviews,
+            
+        }
+
+    return redirect('users:product_details',product_id=product_id)
+
+
+
+from django.utils import timezone
+class NotificationListView(LoginRequiredMixin,ListView):
+    model = Notification
+    template_name = 'notification_list.html'
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add created_date to the context
+        context['now'] = timezone.now()
+        return context
+    
+
+
+# def product_details(request: HttpRequest,product_id) -> HttpResponse:
+#     products=Product.objects.get(id=product_id)
+#     rating = Rating.objects.filter(product=products, user=request.user).first()
+#         # product.avg_rating = product.average_rating()
+#     products.user_rating = rating.rating if rating else 0
+#     reviews = Review.objects.filter(product=products).order_by('-id')[:7] 
+#     context = {
+#         'products':products, 
+#         'reviews' : reviews,
+
+#     }
+#     return render(request, 'users/productdetails.html',context)

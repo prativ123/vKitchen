@@ -59,7 +59,9 @@
             </h5>
 
 
-            <ul class="btn btn-light list-inline rating-list">
+
+  {%if order_status%}
+  <ul class="btn btn-light list-inline rating-list">
                 <li onclick="rate(5, {{ products.id }})">
                     <i class="fa fa-star {% if products.user_rating > 4 %} checked {% endif %}" title="Rate 5"></i>
                 </li>
@@ -77,6 +79,44 @@
                 </li>
             </ul>
 
+            
+            
+     {%endif%}
+
+
+            <div class="container">
+                <h4 class="text-center">Comments:</h4>
+                
+                <form action="{% url 'users:add_reviews' product_id=products.id %}" method="POST" class="mb-3">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <input type="text" name="review" class="form-control" placeholder="Enter Your Review">
+                      <input type="hidden" name="product" class="form-control" value="{{products.product_id}}">
+                    </div>
+                    <div class="col-sm-4">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </div>
+                </form>
+            
+                {% for review in reviews %}
+                <div class="main-reviews card mb-3" style="border-radius: 20px;
+                background: rgb(48,61,58);
+                color: #fff;">
+                  <div class="card-body" style="padding: 0 20px;">
+                    <div class="user_details" style="display: flex; border-bottom: 1px solid rgb(255, 255, 255); align-items: center;">
+                      <h5 class="mr-3 ">{{ review.user.username }} </h5>
+                      <p class="mt-2">{{ review.posted_on }}</p>
+                    </div>
+                      <p class="mt-2">{{ review.review }}</p>
+                  </div>
+                </div>
+                {% empty %}
+                    <h5>No reviews yet...</h5>
+                {% endfor %}
+                
+              </div>
 
         </div>
     </div>

@@ -40,7 +40,7 @@
                         <th>Ordered Date</th>
                         <th>Status</th>
                         <th>Payment Status</th>
-                        <th>Action</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -55,14 +55,14 @@
                         <td>{{ i.created_date }}</td>
                         <td>{{i.status}}</td>
                         <td>Using {{i.payment_method}} ({%if i.payment_status == True %} Payment Completed {% else %} Not paid{% endif %})  </td>
-                        <td>
-                            <!-- <a href="/products/change_status/<int:order_id>/" class="btn btn-primary">
+                        <!-- <td>
+                            <a href="/products/change_status/<int:order_id>/" class="btn btn-primary">
                                 <i class="fas fa-pen-square"></i>
-                            </a> -->
-                            <a class="btn btn-primary" href="{% url 'products:changestatus' id=i.id status='Completed'  %}" role="button">Completed</a>
-                            <a class="btn btn-danger" href="{% url 'products:changestatus' id=i.id status='Canceled'  %}" role="button">Cancel</a>
+                            </a> 
+                             <a class="btn btn-primary" href="{% url 'changestatus' id=i.id status='Completed'  %}" role="button">Completed</a>
+                            <a class="btn btn-danger" href="{% url 'changestatus' id=i.id status='Canceled'  %}" role="button">Cancel</a> 
 
-                        </td>
+                        </td> -->
                     </tr>
 
                     {% endfor %}

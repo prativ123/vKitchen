@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.validators import *
 from django.core import validators
 from django.db.models import Avg
+from django.urls import reverse
 
 # Create your models here.
 class Category(models.Model):
@@ -28,6 +29,8 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.product_name}: {self.average_rating()}"
+    
+
     
 
 class Rating(models.Model):
@@ -60,3 +63,9 @@ class Order(models.Model):
     address = models.CharField(max_length=200, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.product.product_name} - {self.status}"
+    
+
+    class Meta:
+        ordering =["-created_date"]
