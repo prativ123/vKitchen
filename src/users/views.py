@@ -58,20 +58,27 @@ def logout_user(request):
 
 def homepage(request: HttpRequest) -> HttpResponse:
     products = Product.objects.all().order_by('-id')[:8]
-    recommendeds = Recommendation.objects.filter(user=request.user)
-    recommend_list = [a.product.id for a in recommendeds]
-    print(recommend_list)
-    recommendation_products = Product.objects.filter(id__in=recommend_list )[:4]
+
+    if request.user.is_authenticated:
+
+        recommendeds = Recommendation.objects.filter(user=request.user)
+        recommend_list = [a.product.id for a in recommendeds]
+        print(recommend_list)
+        recommendation_products = Product.objects.filter(id__in=recommend_list )[:8]
 
     # for product in products:
         # rating = Rating.objects.filter(product=product, user=request.user).first()
         
         # product.user_rating = rating.rating if rating else 0
-    print(recommendation_products)
-    context = {
-    'products':products, 
-    'recommendations':recommendation_products
-    }
+        print(recommendation_products)
+        context = {
+        'products':products, 
+        'recommendations':recommendation_products
+        }
+    else:
+        context ={
+            "products":products
+        }
     return render(request, 'users/index.html',context)
 # context
 
@@ -108,7 +115,7 @@ def product_details(request: HttpRequest,product_id) -> HttpResponse:
     
     products=Product.objects.get(id=product_id)
     category = Category.objects.get(id=products.category.id)
-    products_list = Product.objects.filter(category=category)[:2]
+    products_list = Product.objects.filter(category=category)[:4]
 
     for i in products_list: 
         recommendation = Recommendation(user=request.user,product=i)

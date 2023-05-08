@@ -420,3 +420,14 @@ def change_payment_status(request, order_id):
         'order': order
     }
     return render(request, 'change_status.html', context)
+
+
+def about(request):
+    products = Product.objects.all().order_by('-id')
+    user = request.user
+    items = Cart.objects.filter(user=user)
+    context = {
+        'products':products,
+        'items':items
+    }
+    return render(request,'products/about.html',context)

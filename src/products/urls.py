@@ -31,4 +31,5 @@ urlpatterns=[
     path('allproductsaes',all_products_aes),
     path('changestatus/<int:id>/<str:status>',change_status,name="changestatus"),
     path('change_status/<int:order_id>/', change_payment_status, name='change_payment_status'),
+    path('about',about,name="about"),
     ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
