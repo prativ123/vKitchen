@@ -31,5 +31,15 @@ class Notification(models.Model):
         ordering = ["-timestamp"]
 
     
+class Recommendation(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    time_stamp = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return f'$0{self.user} is recommended with product ${self.product}'
     
-    
+
+    class Meta: 
+        ordering = ["-time_stamp"]

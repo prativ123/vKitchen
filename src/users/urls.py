@@ -18,5 +18,7 @@ urlpatterns=[
     path('productdetails/<int:product_id>', product_details, name='product_details'),
     path('rate/<int:product_id>/<int:rating>/',rate),
     path('postReview/<int:product_id>',add_reviews, name='add_reviews'),
-    path('notification/',NotificationListView.as_view(),name="notification")
+    path('notification/',NotificationListView.as_view(),name="notification"),
+    # path('recommendations/<int:product_id>/', views.recommend_items, name='recommendations'),
+    # path('recommend/',get_recommendations, name='get_recommendations'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
