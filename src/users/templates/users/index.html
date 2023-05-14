@@ -78,6 +78,30 @@
   </div>
   <!-- carousel end -->
     
+<br>
+  {%if user.is_authenticated %}
+  <div class="container">
+    <h3>Recommended Item:</h3> 
+    <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
+      
+         {% for recommended in recommendations %}
+         <div class="col">
+           <div class="card">
+             <div class="card-body">
+               <div class="card-img">
+                 <img src="/{{recommended.image}}" class="img-fluid" alt="{{product.product_name}}" height="250px">
+             </div>
+               <h5 class="card-title">{{recommended.product_name}}</h5>
+               <h5 class="card-title">Rs.{{recommended.product_price}}</h5>
+               <a href="/productdetails/{{recommended.id}}" class="btn btn-success">View Recommended Item</a>
+             </div>
+           </div>
+         </div> 
+         {% endfor %}
+       </div>
+  </div>
+  {% endif %}
+
 <div class="container">
   <div class="row mt-5">
     <h2>Latest Additions:</h2>

@@ -2,6 +2,7 @@ from email import message
 from multiprocessing import context
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, JsonResponse, HttpRequest
+from django.contrib.auth.models import User
 
 from .models import *
 from .forms import *
@@ -10,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from users.auth import admin_only
 from django.db.models import Avg
 from .models import Product
-from users.models import Notification
+from users.models import Notification,Recommendation
 
 # Create your views here.
 @login_required
@@ -18,7 +19,7 @@ from users.models import Notification
 def index(request):
     products = Product.objects.all()
     context = {
-        'products': products
+        'products': products,
     }
     return render(request, 'products/index.html', context)
 
@@ -419,3 +420,14 @@ def change_payment_status(request, order_id):
         'order': order
     }
     return render(request, 'change_status.html', context)
+
+
+def about(request):
+    products = Product.objects.all().order_by('-id')
+    user = request.user
+    items = Cart.objects.filter(user=user)
+    context = {
+        'products':products,
+        'items':items
+    }
+    return render(request,'products/about.html',context)
